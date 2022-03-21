@@ -12,11 +12,13 @@ namespace SALONES.Models
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
-    public partial class SALONESEntities : DbContext
+    public partial class DBSALONENTITY : DbContext
     {
-        public SALONESEntities()
-            : base("name=SALONESEntities")
+        public DBSALONENTITY()
+            : base("name=DBSALONENTITY")
         {
         }
     
@@ -31,5 +33,20 @@ namespace SALONES.Models
         public virtual DbSet<estado> estado { get; set; }
         public virtual DbSet<motivo> motivo { get; set; }
         public virtual DbSet<solicitudes> solicitudes { get; set; }
+        public virtual DbSet<view_clientes> view_clientes { get; set; }
+        public virtual DbSet<view_solicitudes> view_solicitudes { get; set; }
+    
+        public virtual ObjectResult<SolicitudesXFecha_Result> SolicitudesXFecha(Nullable<System.DateTime> startdate, Nullable<System.DateTime> enddate)
+        {
+            var startdateParameter = startdate.HasValue ?
+                new ObjectParameter("startdate", startdate) :
+                new ObjectParameter("startdate", typeof(System.DateTime));
+    
+            var enddateParameter = enddate.HasValue ?
+                new ObjectParameter("enddate", enddate) :
+                new ObjectParameter("enddate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SolicitudesXFecha_Result>("SolicitudesXFecha", startdateParameter, enddateParameter);
+        }
     }
 }

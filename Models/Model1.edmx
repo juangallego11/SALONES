@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SALONESModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="DBSALONMODEL.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ciudades">
           <Key>
             <PropertyRef Name="id_ciudad" />
@@ -59,6 +59,48 @@
           <Property Name="id_motivo" Type="int" Nullable="false" />
           <Property Name="observaciones" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="id_estado" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'C:\USERS\CG212\DESKTOP\SALONES\APP_DATA\SALONES.MDF.dbo.view_clientes' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="view_clientes">
+          <Key>
+            <PropertyRef Name="id_cliente" />
+            <PropertyRef Name="identificacion" />
+            <PropertyRef Name="nombre_completo" />
+            <PropertyRef Name="telefono" />
+            <PropertyRef Name="correo" />
+            <PropertyRef Name="departamento" />
+            <PropertyRef Name="ciudad" />
+            <PropertyRef Name="edad" />
+          </Key>
+          <Property Name="id_cliente" Type="int" Nullable="false" />
+          <Property Name="identificacion" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="nombre_completo" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="telefono" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="correo" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="departamento" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ciudad" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="edad" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errores durante la generación:
+advertencia 6002: La tabla o vista 'C:\USERS\CG212\DESKTOP\SALONES\APP_DATA\SALONES.MDF.dbo.view_solicitudes' no tiene definida ninguna clave principal. Se ha inferido la clave y la definición se creado como una vista o tabla de solo lectura.-->
+        <EntityType Name="view_solicitudes">
+          <Key>
+            <PropertyRef Name="nombre_completo" />
+            <PropertyRef Name="identificacion" />
+            <PropertyRef Name="telefono" />
+            <PropertyRef Name="ciudad" />
+            <PropertyRef Name="fecha_evento" />
+            <PropertyRef Name="cant_personas" />
+            <PropertyRef Name="motivo" />
+          </Key>
+          <Property Name="nombre_completo" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="identificacion" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="telefono" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="ciudad" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="fecha_evento" Type="date" Nullable="false" />
+          <Property Name="cant_personas" Type="int" Nullable="false" />
+          <Property Name="motivo" Type="nvarchar" MaxLength="200" Nullable="false" />
         </EntityType>
         <Association Name="FK__ciudades__depart__3D5E1FD2">
           <End Role="departamentos" Type="Self.departamentos" Multiplicity="1" />
@@ -132,13 +174,40 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="SALONESModelStoreContainer">
+        <Function Name="SolicitudesXFecha" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="startdate" Type="datetime" Mode="In" />
+          <Parameter Name="enddate" Type="datetime" Mode="In" />
+        </Function>
+        <EntityContainer Name="DBSALONMODELStoreContainer">
           <EntitySet Name="ciudades" EntityType="Self.ciudades" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="clientes" EntityType="Self.clientes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="departamentos" EntityType="Self.departamentos" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="estado" EntityType="Self.estado" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="motivo" EntityType="Self.motivo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="solicitudes" EntityType="Self.solicitudes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="view_clientes" EntityType="Self.view_clientes" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_clientes].[id_cliente] AS [id_cliente], 
+    [view_clientes].[identificacion] AS [identificacion], 
+    [view_clientes].[nombre_completo] AS [nombre_completo], 
+    [view_clientes].[telefono] AS [telefono], 
+    [view_clientes].[correo] AS [correo], 
+    [view_clientes].[departamento] AS [departamento], 
+    [view_clientes].[ciudad] AS [ciudad], 
+    [view_clientes].[edad] AS [edad]
+    FROM [dbo].[view_clientes] AS [view_clientes]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="view_solicitudes" EntityType="Self.view_solicitudes" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [view_solicitudes].[nombre_completo] AS [nombre_completo], 
+    [view_solicitudes].[identificacion] AS [identificacion], 
+    [view_solicitudes].[telefono] AS [telefono], 
+    [view_solicitudes].[ciudad] AS [ciudad], 
+    [view_solicitudes].[fecha_evento] AS [fecha_evento], 
+    [view_solicitudes].[cant_personas] AS [cant_personas], 
+    [view_solicitudes].[motivo] AS [motivo]
+    FROM [dbo].[view_solicitudes] AS [view_solicitudes]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK__ciudades__depart__3D5E1FD2" Association="Self.FK__ciudades__depart__3D5E1FD2">
             <End Role="departamentos" EntitySet="departamentos" />
             <End Role="ciudades" EntitySet="ciudades" />
@@ -168,7 +237,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="SALONESModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="DBSALONMODEL" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="ciudades">
           <Key>
             <PropertyRef Name="id_ciudad" />
@@ -236,6 +305,44 @@
           <NavigationProperty Name="estado" Relationship="Self.FK__solicitud__id_es__49C3F6B7" FromRole="solicitudes" ToRole="estado" />
           <NavigationProperty Name="motivo" Relationship="Self.FK__solicitud__id_mo__48CFD27E" FromRole="solicitudes" ToRole="motivo" />
         </EntityType>
+        <EntityType Name="view_clientes">
+          <Key>
+            <PropertyRef Name="id_cliente" />
+            <PropertyRef Name="identificacion" />
+            <PropertyRef Name="nombre_completo" />
+            <PropertyRef Name="telefono" />
+            <PropertyRef Name="correo" />
+            <PropertyRef Name="departamento" />
+            <PropertyRef Name="ciudad" />
+            <PropertyRef Name="edad" />
+          </Key>
+          <Property Name="id_cliente" Type="Int32" Nullable="false" />
+          <Property Name="identificacion" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="nombre_completo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="telefono" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="correo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="departamento" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ciudad" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="edad" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="view_solicitudes">
+          <Key>
+            <PropertyRef Name="nombre_completo" />
+            <PropertyRef Name="identificacion" />
+            <PropertyRef Name="telefono" />
+            <PropertyRef Name="ciudad" />
+            <PropertyRef Name="fecha_evento" />
+            <PropertyRef Name="cant_personas" />
+            <PropertyRef Name="motivo" />
+          </Key>
+          <Property Name="nombre_completo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="identificacion" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="telefono" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ciudad" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="fecha_evento" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="cant_personas" Type="Int32" Nullable="false" />
+          <Property Name="motivo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
         <Association Name="FK__ciudades__depart__3D5E1FD2">
           <End Role="departamentos" Type="Self.departamentos" Multiplicity="1" />
           <End Role="ciudades" Type="Self.ciudades" Multiplicity="*" />
@@ -308,13 +415,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="SALONESEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="DBSALONENTITY" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ciudades" EntityType="Self.ciudades" />
           <EntitySet Name="clientes" EntityType="Self.clientes" />
           <EntitySet Name="departamentos" EntityType="Self.departamentos" />
           <EntitySet Name="estado" EntityType="Self.estado" />
           <EntitySet Name="motivo" EntityType="Self.motivo" />
           <EntitySet Name="solicitudes" EntityType="Self.solicitudes" />
+          <EntitySet Name="view_clientes" EntityType="Self.view_clientes" />
+          <EntitySet Name="view_solicitudes" EntityType="Self.view_solicitudes" />
           <AssociationSet Name="FK__ciudades__depart__3D5E1FD2" Association="Self.FK__ciudades__depart__3D5E1FD2">
             <End Role="departamentos" EntitySet="departamentos" />
             <End Role="ciudades" EntitySet="ciudades" />
@@ -339,15 +448,28 @@
             <End Role="motivo" EntitySet="motivo" />
             <End Role="solicitudes" EntitySet="solicitudes" />
           </AssociationSet>
+          <FunctionImport Name="SolicitudesXFecha" ReturnType="Collection(DBSALONMODEL.SolicitudesXFecha_Result)">
+            <Parameter Name="startdate" Mode="In" Type="DateTime" />
+            <Parameter Name="enddate" Mode="In" Type="DateTime" />
+          </FunctionImport>
         </EntityContainer>
+        <ComplexType Name="SolicitudesXFecha_Result">
+          <Property Type="String" Name="nombre_completo" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="identificacion" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="telefono" Nullable="false" MaxLength="15" />
+          <Property Type="String" Name="ciudad" Nullable="false" MaxLength="255" />
+          <Property Type="DateTime" Name="fecha_evento" Nullable="false" />
+          <Property Type="Int32" Name="cant_personas" Nullable="false" />
+          <Property Type="String" Name="motivo" Nullable="false" MaxLength="200" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="SALONESModelStoreContainer" CdmEntityContainer="SALONESEntities">
+        <EntityContainerMapping StorageEntityContainer="DBSALONMODELStoreContainer" CdmEntityContainer="DBSALONENTITY">
           <EntitySetMapping Name="ciudades">
-            <EntityTypeMapping TypeName="SALONESModel.ciudades">
+            <EntityTypeMapping TypeName="DBSALONMODEL.ciudades">
               <MappingFragment StoreEntitySet="ciudades">
                 <ScalarProperty Name="id_ciudad" ColumnName="id_ciudad" />
                 <ScalarProperty Name="ciudad" ColumnName="ciudad" />
@@ -357,7 +479,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="clientes">
-            <EntityTypeMapping TypeName="SALONESModel.clientes">
+            <EntityTypeMapping TypeName="DBSALONMODEL.clientes">
               <MappingFragment StoreEntitySet="clientes">
                 <ScalarProperty Name="id_cliente" ColumnName="id_cliente" />
                 <ScalarProperty Name="identificacion" ColumnName="identificacion" />
@@ -371,7 +493,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="departamentos">
-            <EntityTypeMapping TypeName="SALONESModel.departamentos">
+            <EntityTypeMapping TypeName="DBSALONMODEL.departamentos">
               <MappingFragment StoreEntitySet="departamentos">
                 <ScalarProperty Name="id_departamento" ColumnName="id_departamento" />
                 <ScalarProperty Name="departamento" ColumnName="departamento" />
@@ -379,7 +501,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="estado">
-            <EntityTypeMapping TypeName="SALONESModel.estado">
+            <EntityTypeMapping TypeName="DBSALONMODEL.estado">
               <MappingFragment StoreEntitySet="estado">
                 <ScalarProperty Name="id_estado" ColumnName="id_estado" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />
@@ -387,7 +509,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="motivo">
-            <EntityTypeMapping TypeName="SALONESModel.motivo">
+            <EntityTypeMapping TypeName="DBSALONMODEL.motivo">
               <MappingFragment StoreEntitySet="motivo">
                 <ScalarProperty Name="id_motivo" ColumnName="id_motivo" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />
@@ -395,7 +517,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="solicitudes">
-            <EntityTypeMapping TypeName="SALONESModel.solicitudes">
+            <EntityTypeMapping TypeName="DBSALONMODEL.solicitudes">
               <MappingFragment StoreEntitySet="solicitudes">
                 <ScalarProperty Name="id_solicitud" ColumnName="id_solicitud" />
                 <ScalarProperty Name="id_cliente" ColumnName="id_cliente" />
@@ -407,6 +529,46 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="view_clientes">
+            <EntityTypeMapping TypeName="DBSALONMODEL.view_clientes">
+              <MappingFragment StoreEntitySet="view_clientes">
+                <ScalarProperty Name="id_cliente" ColumnName="id_cliente" />
+                <ScalarProperty Name="identificacion" ColumnName="identificacion" />
+                <ScalarProperty Name="nombre_completo" ColumnName="nombre_completo" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="correo" ColumnName="correo" />
+                <ScalarProperty Name="departamento" ColumnName="departamento" />
+                <ScalarProperty Name="ciudad" ColumnName="ciudad" />
+                <ScalarProperty Name="edad" ColumnName="edad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="view_solicitudes">
+            <EntityTypeMapping TypeName="DBSALONMODEL.view_solicitudes">
+              <MappingFragment StoreEntitySet="view_solicitudes">
+                <ScalarProperty Name="nombre_completo" ColumnName="nombre_completo" />
+                <ScalarProperty Name="identificacion" ColumnName="identificacion" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="ciudad" ColumnName="ciudad" />
+                <ScalarProperty Name="fecha_evento" ColumnName="fecha_evento" />
+                <ScalarProperty Name="cant_personas" ColumnName="cant_personas" />
+                <ScalarProperty Name="motivo" ColumnName="motivo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SolicitudesXFecha" FunctionName="DBSALONMODEL.Store.SolicitudesXFecha">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DBSALONMODEL.SolicitudesXFecha_Result">
+                <ScalarProperty Name="nombre_completo" ColumnName="nombre_completo" />
+                <ScalarProperty Name="identificacion" ColumnName="identificacion" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="ciudad" ColumnName="ciudad" />
+                <ScalarProperty Name="fecha_evento" ColumnName="fecha_evento" />
+                <ScalarProperty Name="cant_personas" ColumnName="cant_personas" />
+                <ScalarProperty Name="motivo" ColumnName="motivo" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

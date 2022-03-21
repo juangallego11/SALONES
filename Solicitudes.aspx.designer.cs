@@ -11,71 +11,62 @@ namespace SALONES
 {
 
 
-    public partial class WebForm1
+    public partial class Solicitudes
     {
 
         /// <summary>
-        /// Control txtIdentificacion.
+        /// Control cmbCliente.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txtIdentificacion;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect cmbCliente;
 
         /// <summary>
-        /// Control txtNombre.
+        /// Control txtFecha.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txtNombre;
+        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl txtFecha;
 
         /// <summary>
-        /// Control txtTelefono.
+        /// Control txtCantidad.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText txtTelefono;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtCantidad;
 
         /// <summary>
-        /// Control txtCorreo.
+        /// Control cmbMotivo.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl txtCorreo;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect cmbMotivo;
 
         /// <summary>
-        /// Control cmbDepartamento.
+        /// Control cmbEstado.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect cmbDepartamento;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect cmbEstado;
 
         /// <summary>
-        /// Control cmbCiudad.
+        /// Control txtObservaciones.
         /// </summary>
         /// <remarks>
         /// Campo generado automáticamente.
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect cmbCiudad;
-
-        /// <summary>
-        /// Control cmbEdad.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect cmbEdad;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtObservaciones;
 
         /// <summary>
         /// Control btnRegistrar.
@@ -85,14 +76,5 @@ namespace SALONES
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlButton btnRegistrar;
-
-        /// <summary>
-        /// Control tablaClientes.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTable tablaClientes;
     }
 }

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Clientes.aspx.cs" Inherits="SALONES.WebForm1" %>
+﻿<%@ Page Async="true" Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Clientes.aspx.cs" Inherits="SALONES.WebForm1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <h1>Registro de clientes</h1>
     <div style="display: flex; gap: 20px 20px; flex-wrap: wrap">
@@ -20,7 +20,7 @@
         </div>
         <div class="mb-3">
             <label for="cmbDepartamento" class="form-label">Departamento</label>
-            <select runat="server" aria-label="Default select example" id="cmbDepartamento" style="display: block; width: 230px; padding: .375rem 2.25rem .375rem .75rem;
+            <select runat="server" onserverchange="CmbDepartamento_ServerChange" aria-label="Default select example" id="cmbDepartamento" style="display: block; width: 230px; padding: .375rem 2.25rem .375rem .75rem;
                            font-weight: 400; line-height: 1.5; color: #212529; background-color: #fff;
                            background-repeat: no-repeat;
                            background-position: right .75rem center;
@@ -29,10 +29,7 @@
                            border-radius: 4px;
                            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
                            height: 34px;">
-              <option selected>Seleccione el departamento</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+    
             </select>
         </div>
 
@@ -47,10 +44,7 @@
                            border-radius: 4px;
                            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
                            height: 34px;">
-              <option selected>Seleccione la ciudad</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+              
             </select>
         </div>
 
@@ -64,17 +58,13 @@
                            border: 1px solid #ced4da;
                            border-radius: 4px;
                            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-                           height: 34px;">
-              <option selected>Seleccione la edad</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
+                           height: 34px;" dir="ltr">        
             </select>
         </div>
 
         <div>
             <br />
-            <button runat="server" style="height: 34px; margin-top: 5px;" type="submit" class="btn btn-primary">Registrar</button>
+            <button id="btnRegistrar" runat="server" style="height: 34px; margin-top: 5px;" type="submit" class="btn btn-primary" onserverclick="btnRegistrar_obtenerValores" >Registrar</button>
         </div>
     </div>
 
@@ -82,7 +72,7 @@
 
     <h1>Listado de clientes</h1>
     <br />
-    <table class="table">
+    <table class="table" id="tablaClientes" runat="server">
       <thead>
         <tr>
             <th scope="col">Identificación</th>

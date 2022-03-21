@@ -54,6 +54,7 @@
                         <li><a runat="server" href="~/">Inicio</a></li>
                         <li><a runat="server" href="~/Clientes">Clientes</a></li>
                         <li><a runat="server" href="~/Solicitudes">Solicitudes</a></li>
+                        <li><a runat="server" href="~/ConsultaSolicitudes">Consultar solicitudes</a></li>
                     </ul>
                 </div>
             </div>
